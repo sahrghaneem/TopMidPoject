@@ -1,0 +1,52 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing:border-box ;
+  background: rgba(242, 236, 248, 0.514);
+
+}
+
+body {
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+}
+
+.App {
+  text-align: center;
+}
+
+.container{
+  width: 800px;
+  height:800px;
+  background-color: rgb(179, 233, 233);
+  display: grid;
+  grid-template: repeat(8,1fr)/repeat(8,1fr);
+  }
+  
+.evenSquare{
+  border:solid 2px black;
+  width: 100px;
+  height: 100px;
+  background-color:rgba(105, 61, 36, 0.884);
+}
+.oddSquare{
+  border:solid 2px black;
+  width: 100px;
+  height:100px;
+  background-color:rgba(202, 177, 32, 0.829);
+}
+
+.soldier{
+  background: transparent;
+  font-size: 80px;
+  /* cursor: grab; */
+}
+.newSoldier{
+  font-size: 80px;
+}
+.canMove:hover{
+  background-color: green;
+}
