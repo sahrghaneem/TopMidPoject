@@ -7,9 +7,9 @@ let selectedI=" "
 let selectedJ=" "
 let player="1"
 
-    const whiteArmy=["♔","♕","♖","♗","♘","♙"]
-    const blackArmy=["♚","♛","♜","♝","♞","♟︎"]
-
+    const whiteArmy=["♔","♕","♖","♗","♘","♙"];
+    const BlackArmy=["♚","♛","♜","♝","♞","♟"]
+    const[show,setShow]=React.useState()
     const [board] = React.useState([
         ['00','01','02','03','04','05','06','07'],
         ['10','11','12','13','14','15','16','17'],
@@ -93,11 +93,13 @@ let player="1"
                         } 
                     newele.classList.add("newSoldier");
                         
-                    selectedSoldier=" "
-                    selectedI=" "
-                    selectedJ=" "
+                   
                     canAttackFirst=0
                 }
+                
+
+
+                
                 
             if(selectedJ===1)//if we are on first move
             {
@@ -122,13 +124,11 @@ let player="1"
             newele.innerHTML="♟"
             newele.classList.add("newSoldier");
                 
-            selectedSoldier=" "
-            selectedI=" "
-            selectedJ=" "
+           
 
             }
             }
-        else{// not first move of the pawn
+            else{// not first move of the pawn
             if(i===selectedI && selectedJ+1===j && CurrentElement.textContent==="")
             {
                 console.log("now Moving")
@@ -150,9 +150,7 @@ let player="1"
             } 
         newele.classList.add("newSoldier");
                 
-            selectedSoldier=" "
-            selectedI=" "
-            selectedJ=" "
+            
             }
             console.log("now Moving")
         }
@@ -164,24 +162,30 @@ let player="1"
                 let canAttackFirst=0
                 console.log(canAttackFirst);
                 let CAFJ=selectedJ-1
-                let CAFI=selectedI+1
+                let CAFI=selectedI-1
                 let CAFC=CAFI.toString()+CAFJ.toString();
-                let CAFE=document.getElementById(CAFC)
-                let CAFEC=CAFE.textContent
-                for(let tmp=0;tmp<blackArmy.length;tmp++)
+                let CAFE=document.getElementById(CAFC);
+                let CAFEC=CAFE.textContent;
+                console.log("cafec is",CAFEC)
+                for(let tmp1=0;tmp1<BlackArmy.length;tmp1++)
                 {
-                    if(CAFEC=== blackArmy[tmp])
+                    console.log("in look checking this :"+CAFEC+"vs"+BlackArmy[tmp1])
+                    if(CAFEC === BlackArmy[tmp1] )
+                    {
                         canAttackFirst=1;
+                        console.log("we in loop",tmp1)
+                      
+                    }
                 }
                
                 console.log("can attack first = "+ canAttackFirst);
-                if(canAttackFirst && (i===selectedI+1 || i===selectedI-1)  && selectedJ+1===j){
+                if(canAttackFirst && (i===selectedI+1 || i===selectedI-1)  && selectedJ-1===j){
                     console.log("this is : "+CurrentElement.textContent);
                     PreviousElement.innerHTML=""
                     
                     console.log(i)
                     let newj=selectedJ - (selectedJ-j);
-                    let newi=selectedI - (i-selectedI);
+                    let newi=selectedI - (selectedI-i);
                     let newCoordinates = newi.toString()+newj.toString();
                     let newele=document.getElementById(newCoordinates);
                     if(j===7)
@@ -194,10 +198,8 @@ let player="1"
                     } 
                     newele.classList.add("newSoldier");
                         
-                    selectedSoldier=" "
-                    selectedI=" "
-                    selectedJ=" "
-        
+                    
+                    canAttackFirst=0;
                 }
                 
             if(selectedJ===6)//if we are on first move
@@ -230,19 +232,16 @@ let player="1"
             } 
             newele.classList.add("newSoldier");
                 
-            selectedSoldier=" "
-            selectedI=" "
-            selectedJ=" "
+            
 
             }
             }
         else{// not first move of the pawn
             if(i===selectedI && selectedJ-1===j && CurrentElement.textContent==="")
             {
-                
-                 
-                console.log("i is :"+i+" and j is :"+j);
-                console.log(CurrentElement.textContent);
+            
+            console.log("i is :"+i+" and j is :"+j);
+            console.log(CurrentElement.textContent);
             PreviousElement.innerHTML=""
             let newi=i;
             console.log(newi)
@@ -252,18 +251,17 @@ let player="1"
                 newele.innerText="♙"
             newele.classList.add("newSoldier");
                  
-            selectedSoldier=" "
-            selectedI=" "
-            selectedJ=" "
+           
             }
         }
     }//finish handling white pawn
 
 
-    console.log("where are we ? :",PreviousElement.textContent)
+   
     if(PreviousElement.textContent==="♞")// start to handle black KNIGHT
     {
-        // console.log(" we are at ",PreviousElement.textContent)
+        console.log("where are we ? :",PreviousElement.textContent)
+        
         // let canAttackFirst=0
         // console.log(canAttackFirst);
         // let CAFJ=selectedJ-1
@@ -281,29 +279,34 @@ let player="1"
         console.log("we at black knight")
         console.log("i is :"+i+" and j is :"+j);
         console.log(CurrentElement.textContent);
-    PreviousElement.innerHTML=""
-    let newi=i;
-    console.log(newi)
-    let newj=selectedJ + (j-selectedJ);
-    let newCoordinates = newi.toString()+newj.toString();
-    let newele=document.getElementById(newCoordinates);
-    newele.innerHTML="♞"
-    newele.classList.add("newSoldier");
+        let isBlocked =0
+           for(let tmp=0;tmp<BlackArmy.length;tmp++)
+           {
+               if(CurrentElement.textContent === BlackArmy[tmp])
+                 isBlocked=1;
+           }
+           if(!isBlocked)
+           {
+            PreviousElement.innerHTML=""
+            let newi=i;
+            console.log(newi)
+            let newj=selectedJ + (j-selectedJ);
+            let newCoordinates = newi.toString()+newj.toString();
+            let newele=document.getElementById(newCoordinates);
+            newele.innerHTML="♞"
+            newele.classList.add("newSoldier");
+           }
+           else
+           {alert("the path is blocked")}
     }
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
-    
     console.log("now Moving")
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
 }
 
-console.log("where are we ? :",PreviousElement.textContent)
+
 if(PreviousElement.textContent==="♘")// start to handle black KNIGHT
 {
-      // console.log(" we are at ",PreviousElement.textContent)
+    console.log("where are we ? :",PreviousElement.textContent)
+      
         // let canAttackFirst=0
         // console.log(canAttackFirst);
         // let CAFJ=selectedJ-1
@@ -322,30 +325,34 @@ if(((i===selectedI+1 || i===selectedI-1 ) &&( selectedJ+2===j|| selectedJ-2===j)
     console.log("we at black knight")
     console.log("i is :"+i+" and j is :"+j);
     console.log(CurrentElement.textContent);
-PreviousElement.innerHTML=""
-let newi=i;
-console.log(newi)
-let newj=selectedJ + (j-selectedJ);
-let newCoordinates = newi.toString()+newj.toString();
-let newele=document.getElementById(newCoordinates);
-newele.innerHTML="♘"
-newele.classList.add("newSoldier");
+    let isBlocked =0
+           for(let tmp=0;tmp<whiteArmy.length;tmp++)
+           {
+               if(CurrentElement.textContent === whiteArmy[tmp])
+                 isBlocked=1;
+           }
+           if(!isBlocked)
+           {
+            PreviousElement.innerHTML=""
+            let newi=i;
+            console.log(newi)
+            let newj=selectedJ + (j-selectedJ);
+            let newCoordinates = newi.toString()+newj.toString();
+            let newele=document.getElementById(newCoordinates);
+            newele.innerHTML="♘"
+            newele.classList.add("newSoldier");
+           }
+           else
+           {alert("the path is blocked")}
 }
-selectedSoldier=" "
-selectedI=" "
-selectedJ=" "
 
 console.log("now Moving")
-selectedSoldier=" "
-selectedI=" "
-selectedJ=" "
 }
 
 
-console.log("where are we ? :",PreviousElement.textContent)
     if(PreviousElement.textContent==="♜")// start to handle black Rook
     {
-          // console.log(" we are at ",PreviousElement.textContent)
+          console.log(" we are at ",PreviousElement.textContent)
         // let canAttackFirst=0
         // console.log(canAttackFirst);
         // let CAFJ=selectedJ-1
@@ -371,29 +378,34 @@ console.log("where are we ? :",PreviousElement.textContent)
         console.log("we at black Rook")
         console.log("i is :"+i+" and j is :"+j);
         console.log(CurrentElement.textContent);
-    PreviousElement.innerHTML=""
-    let newi=i;
-    console.log(newi)
-    let newj=selectedJ + (j-selectedJ);
-    let newCoordinates = newi.toString()+newj.toString();
-    let newele=document.getElementById(newCoordinates);
-    newele.innerHTML="♜"
-    newele.classList.add("newSoldier");
+        let isBlocked =0
+        for(let tmp=0;tmp<BlackArmy.length;tmp++)
+        {
+            if(CurrentElement.textContent === BlackArmy[tmp])
+              isBlocked=1;
+        }
+        if(!isBlocked)
+        {
+            PreviousElement.innerHTML=""
+            let newi=i;
+            console.log(newi)
+            let newj=selectedJ + (j-selectedJ);
+            let newCoordinates = newi.toString()+newj.toString();
+            let newele=document.getElementById(newCoordinates);
+            newele.innerHTML="♜"
+            newele.classList.add("newSoldier");
+        }
+        else{
+            alert("Path is blocked")
+        }
     }
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
-    
     console.log("now Moving")
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
 }
 
-console.log("where are we ? :",PreviousElement.textContent)
+
     if(PreviousElement.textContent==="♖")// start to handle White Rook
     {
-        // console.log(" we are at ",PreviousElement.textContent)
+        console.log(" we are at ",PreviousElement.textContent)
         // let canAttackFirst=0
         // console.log(canAttackFirst);
         // let CAFJ=selectedJ-1
@@ -417,29 +429,35 @@ console.log("where are we ? :",PreviousElement.textContent)
         console.log("we at White Rook")
         console.log("i is :"+i+" and j is :"+j);
         console.log(CurrentElement.textContent);
-    PreviousElement.innerHTML=""
-    let newi=i;
-    console.log(newi)
-    let newj=selectedJ + (j-selectedJ);
-    let newCoordinates = newi.toString()+newj.toString();
-    let newele=document.getElementById(newCoordinates);
-    newele.innerHTML="♖"
-    newele.classList.add("newSoldier");
+        let isBlocked =0
+        for(let tmp=0;tmp<whiteArmy.length;tmp++)
+        {
+            if(CurrentElement.textContent === whiteArmy[tmp])
+              isBlocked=1;
+        }
+        if(!isBlocked)
+        {
+            PreviousElement.innerHTML=""
+            let newi=i;
+            console.log(newi)
+            let newj=selectedJ + (j-selectedJ);
+            let newCoordinates = newi.toString()+newj.toString();
+            let newele=document.getElementById(newCoordinates);
+            newele.innerHTML="♖"
+            newele.classList.add("newSoldier");
+        }
+        else{
+            alert("path is blocked")
+        }
     }
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
     
     console.log("now Moving")
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
 }
 
-console.log("where are we ? :",PreviousElement.textContent)
+
     if(PreviousElement.textContent==="♝")// start to handle black BISHOPH
     {
-                // console.log(" we are at ",PreviousElement.textContent)
+                console.log(" we are at ",PreviousElement.textContent)
         // let canAttackFirst=0
         // console.log(canAttackFirst);
         // let CAFJ=selectedJ-1
@@ -464,30 +482,34 @@ console.log("where are we ? :",PreviousElement.textContent)
         console.log("we at black BISHOPH")
         console.log("i is :"+i+" and j is :"+j);
         console.log(CurrentElement.textContent);
-    PreviousElement.innerHTML=""
-    let newi=i;
-    console.log(newi)
-    let newj=selectedJ + (j-selectedJ);
-    let newCoordinates = newi.toString()+newj.toString();
-    let newele=document.getElementById(newCoordinates);
-    newele.innerHTML="♝"
-    newele.classList.add("newSoldier");
+        let isBlocked =0
+        for(let tmp=0;tmp<BlackArmy.length;tmp++)
+        {
+            if(CurrentElement.textContent === BlackArmy[tmp])
+              isBlocked=1;
+        }
+        if(!isBlocked)
+        {
+            PreviousElement.innerHTML=""
+            let newi=i;
+            console.log(newi)
+            let newj=selectedJ + (j-selectedJ);
+            let newCoordinates = newi.toString()+newj.toString();
+            let newele=document.getElementById(newCoordinates);
+            newele.innerHTML="♝"
+            newele.classList.add("newSoldier");
+        }
+        else{
+            alert("path is blocked")
+        }
     }
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
-    
     console.log("now Moving")
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
 }
 
 
-console.log("where are we ? :",PreviousElement.textContent)
     if(PreviousElement.textContent==="♗")// start to handle White BISHOPH
     {
-        // console.log(" we are at ",PreviousElement.textContent)
+        console.log(" we are at ",PreviousElement.textContent)
         // let canAttackFirst=0
         // console.log(canAttackFirst);
         // let CAFJ=selectedJ-1
@@ -511,29 +533,34 @@ console.log("where are we ? :",PreviousElement.textContent)
         console.log("we at White BISHOPH")
         console.log("i is :"+i+" and j is :"+j);
         console.log(CurrentElement.textContent);
-    PreviousElement.innerHTML=""
-    let newi=i;
-    console.log(newi)
-    let newj=selectedJ + (j-selectedJ);
-    let newCoordinates = newi.toString()+newj.toString();
-    let newele=document.getElementById(newCoordinates);
-    newele.innerHTML="♗"
-    newele.classList.add("newSoldier");
+        let isBlocked =0
+        for(let tmp=0;tmp<whiteArmy.length;tmp++)
+        {
+            if(CurrentElement.textContent === whiteArmy[tmp])
+              isBlocked=1;
+        }
+        if(!isBlocked)
+        {
+            PreviousElement.innerHTML=""
+            let newi=i;
+            console.log(newi)
+            let newj=selectedJ + (j-selectedJ);
+            let newCoordinates = newi.toString()+newj.toString();
+            let newele=document.getElementById(newCoordinates);
+            newele.innerHTML="♗"
+            newele.classList.add("newSoldier");
+        }
+        else{
+            alert("path is blocked");
+        }
     }
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
     
     console.log("now Moving")
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
 }
 
-console.log("where are we ? :",PreviousElement.textContent)
     if(PreviousElement.textContent==="♚")// start to handle black KNIGHT
     {
-                // console.log(" we are at ",PreviousElement.textContent)
+                console.log(" we are at ",PreviousElement.textContent)
         // let canAttackFirst=0
         // console.log(canAttackFirst);
         // let CAFJ=selectedJ-1
@@ -552,29 +579,32 @@ console.log("where are we ? :",PreviousElement.textContent)
         console.log("we at black King")
         console.log("i is :"+i+" and j is :"+j);
         console.log(CurrentElement.textContent);
-    PreviousElement.innerHTML=""
-    let newi=i;
-    console.log(newi)
-    let newj=selectedJ + (j-selectedJ);
-    let newCoordinates = newi.toString()+newj.toString();
-    let newele=document.getElementById(newCoordinates);
-    newele.innerHTML="♚"
-    newele.classList.add("newSoldier");
+        let isBlocked =0
+        for(let tmp=0;tmp<BlackArmy.length;tmp++)
+        {
+            if(CurrentElement.textContent === BlackArmy[tmp])
+              isBlocked=1;
+        }
+        if(!isBlocked)
+        {
+            PreviousElement.innerHTML=""
+            let newi=i;
+            console.log(newi)
+            let newj=selectedJ + (j-selectedJ);
+            let newCoordinates = newi.toString()+newj.toString();
+            let newele=document.getElementById(newCoordinates);
+            newele.innerHTML="♚"
+            newele.classList.add("newSoldier");
+        }
+        else{alert("path is blocked")}
     }
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
-    
+
     console.log("now Moving")
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
 }
 
-console.log("where are we ? :",PreviousElement.textContent)
     if(PreviousElement.textContent==="♔")// start to handle white king
     {
-        // console.log(" we are at ",PreviousElement.textContent)
+        console.log(" we are at ",PreviousElement.textContent)
         // let canAttackFirst=0
         // console.log(canAttackFirst);
         // let CAFJ=selectedJ-1
@@ -592,29 +622,35 @@ console.log("where are we ? :",PreviousElement.textContent)
         console.log("we at white King")
         console.log("i is :"+i+" and j is :"+j);
         console.log(CurrentElement.textContent);
-    PreviousElement.innerHTML=""
-    let newi=i;
-    console.log(newi)
-    let newj=selectedJ + (j-selectedJ);
-    let newCoordinates = newi.toString()+newj.toString();
-    let newele=document.getElementById(newCoordinates);
-    newele.innerHTML="♔"
-    newele.classList.add("newSoldier");
+        let isBlocked =0
+        for(let tmp=0;tmp<whiteArmy.length;tmp++)
+        {
+            if(CurrentElement.textContent === whiteArmy[tmp])
+              isBlocked=1;
+        }
+        if(!isBlocked)
+        {
+            PreviousElement.innerHTML=""
+            let newi=i;
+            console.log(newi)
+            let newj=selectedJ + (j-selectedJ);
+            let newCoordinates = newi.toString()+newj.toString();
+            let newele=document.getElementById(newCoordinates);
+            newele.innerHTML="♔"
+            newele.classList.add("newSoldier");
+        }
+        else{
+            alert("path is blocked")
+        }
     }
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
     
     console.log("now Moving")
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
+    
 }
 
-console.log("where are we ? :",PreviousElement.textContent)
     if(PreviousElement.textContent==="♛")// start to handle black Queen
     {
-        // console.log(" we are at ",PreviousElement.textContent)
+        console.log(" we are at ",PreviousElement.textContent)
         // let canAttackFirst=0
         // console.log(canAttackFirst);
         // let CAFJ=selectedJ-1
@@ -645,29 +681,33 @@ console.log("where are we ? :",PreviousElement.textContent)
         console.log("we at black Queen")
         console.log("i is :"+i+" and j is :"+j);
         console.log(CurrentElement.textContent);
-    PreviousElement.innerHTML=""
-    let newi=i;
-    console.log(newi)
-    let newj=selectedJ + (j-selectedJ);
-    let newCoordinates = newi.toString()+newj.toString();
-    let newele=document.getElementById(newCoordinates);
-    newele.innerHTML="♛"
-    newele.classList.add("newSoldier");
+        let isBlocked =0
+        for(let tmp=0;tmp<BlackArmy.length;tmp++)
+        {
+            if(CurrentElement.textContent === BlackArmy[tmp])
+              isBlocked=1;
+        }
+        if(!isBlocked)
+        {
+            PreviousElement.innerHTML=""
+            let newi=i;
+            console.log(newi)
+            let newj=selectedJ + (j-selectedJ);
+            let newCoordinates = newi.toString()+newj.toString();
+            let newele=document.getElementById(newCoordinates);
+            newele.innerHTML="♛"
+            newele.classList.add("newSoldier");
+        }
+        else{
+            alert("path is blocked")
+        }
     }
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
-    
     console.log("now Moving")
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
 }
 
-console.log("where are we ? :",PreviousElement.textContent)
     if(PreviousElement.textContent==="♕")// start to handle white Queen
     {
-        // console.log(" we are at ",PreviousElement.textContent)
+        console.log(" we are at ",PreviousElement.textContent)
         // let canAttackFirst=0
         // console.log(canAttackFirst);
         // let CAFJ=selectedJ-1
@@ -698,35 +738,75 @@ console.log("where are we ? :",PreviousElement.textContent)
         console.log("we at  white Queen")
         console.log("i is :"+i+" and j is :"+j);
         console.log(CurrentElement.textContent);
-    PreviousElement.innerHTML=""
-    let newi=i;
-    console.log(newi)
-    let newj=selectedJ + (j-selectedJ);
-    let newCoordinates = newi.toString()+newj.toString();
-    let newele=document.getElementById(newCoordinates);
-    newele.innerHTML="♕"
-    newele.classList.add("newSoldier");
+        let isBlocked =0
+        for(let tmp=0;tmp<whiteArmy.length;tmp++)
+        {
+            if(CurrentElement.textContent === whiteArmy[tmp])
+              isBlocked=1;
+        }
+        if(!isBlocked)
+        {
+            PreviousElement.innerHTML=""
+            let newi=i;
+            console.log(newi)
+            let newj=selectedJ + (j-selectedJ);
+            let newCoordinates = newi.toString()+newj.toString();
+            let newele=document.getElementById(newCoordinates);
+            newele.innerHTML="♕"
+            newele.classList.add("newSoldier");
+        }
+        else{alert("path is blocked")}
     }
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
-    
     console.log("now Moving")
-    selectedSoldier=" "
-    selectedI=" "
-    selectedJ=" "
 }
-
 
     selectedSoldier=" "
     selectedI=" "
     selectedJ=" "
        
 }
+
+
+    }
+    const PopularMove=()=>{
+        let removeElement = document.getElementById("31");
+        removeElement.textContent=""
+        
+        removeElement = document.getElementById("41");
+        removeElement.textContent=""
+        
+        removeElement = document.getElementById("10");
+        removeElement.textContent=""
+        let addelement=document.getElementById("33");
+        addelement.textContent="♟"
+        addelement.classList.add("newSoldier")
+        
+        addelement=document.getElementById("43");
+        addelement.textContent="♞"
+        addelement.classList.add("newSoldier")
+        
+        addelement=document.getElementById("25");
+        addelement.textContent="♘"
+        addelement.classList.add("newSoldier")
+        
+        addelement=document.getElementById("55");
+        addelement.textContent="♘"
+        addelement.classList.add("newSoldier");
+
+        removeElement = document.getElementById("17");
+        removeElement.textContent=""
+
+        removeElement = document.getElementById("67");
+        removeElement.textContent=""
+
+      
+
     }
 return(
+    <>
 
 <div className="container">
+  
     {
        board.map((element,i)=>
            <div key={i}>{
@@ -747,7 +827,12 @@ return(
          j===0&&(i===1||i===6)?<div className={i%2===j%2?"oddSquare":"evenSquare"} id={ele} onClick={(e)=>clickhandler(i,j)}  key={ele} i={i} j={j} ><span className="soldier">♞</span></div>:// drawing Black knight
          <div onClick={(e)=>clickhandler(i,j)} className={i%2===j%2?"oddSquare":"evenSquare"} id={ele} key={ele} i={i} j={j}></div>
 
-        )}</div>)}
+        )}
+        
+        </div>)}
+    
 </div>
+<div><input type="button" className=" SicilianDefense" onClick={(e)=>PopularMove()} value="Popular Move"/></div>
+</>
 )
 }

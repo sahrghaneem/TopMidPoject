@@ -50,3 +50,11 @@ body {
 .canMove:hover{
   background-color: green;
 }
+
+.SicilianDefense{
+  text-decoration: underline ;
+  display:flex;
+  font-size: 16px;
+  margin-left: 100vh;
+  
+}
